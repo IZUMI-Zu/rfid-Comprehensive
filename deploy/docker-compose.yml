@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./deploy/Dockerfile
+      target: prod
+    image: checkin:${CHECKIN_VERSION:-latest}
+    restart: always
+    env_file:
+    - .env
+    environment:
+      CHECKIN_HOST: 0.0.0.0
+      CHECKIN_DB_FILE: /db_data/db.sqlite3
+    volumes:
+    - checkin-db-data:/db_data/
+
+  migrator:
+    image: checkin:${CHECKIN_VERSION:-latest}
+    restart: "no"
+    command: alembic upgrade head
+    environment:
+      CHECKIN_DB_FILE: /db_data/db.sqlite3
+    volumes:
+    - checkin-db-data:/db_data/
+
+
+
+volumes:
+  checkin-db-data:
+    name: checkin-db-data
