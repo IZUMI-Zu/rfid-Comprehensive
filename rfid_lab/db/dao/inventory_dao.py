@@ -7,7 +7,7 @@ from rfid_lab.db.models.inventory_model import InventoryModel
 class InventoryDAO:
     """Class for accessing Inventory table."""
 
-    async def create_inventory(
+    async def create_inventory(  # noqa: WPS211
         self,
         item_number: str,
         card_number: str,
@@ -26,6 +26,7 @@ class InventoryDAO:
         :param warehouse_number: Warehouse number where the inventory item is stored.
         :param shelf_number: Shelf number where the inventory item is stored.
         :param storage_time: The time when the inventory item was stored.
+        :param item_status: The status of the inventory item.
         """
         await InventoryModel.create(
             item_number=item_number,

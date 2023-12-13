@@ -1,6 +1,9 @@
 from tortoise import fields
 from tortoise.models import Model
 
+MAX_CHARFIELD_LENGTH = 50
+MAX_ITEM_NAME_LENGTH = 100
+
 
 class InventoryModel(Model):
     """
@@ -19,11 +22,11 @@ class InventoryModel(Model):
     """
 
     id = fields.IntField(pk=True)
-    item_number = fields.CharField(max_length=50)
-    card_number = fields.CharField(max_length=50)
-    item_name = fields.CharField(max_length=100)
-    warehouse_number = fields.CharField(max_length=50)
-    shelf_number = fields.CharField(max_length=50)
+    item_number = fields.CharField(max_length=MAX_CHARFIELD_LENGTH)
+    card_number = fields.CharField(max_length=MAX_CHARFIELD_LENGTH)
+    item_name = fields.CharField(max_length=MAX_ITEM_NAME_LENGTH)
+    warehouse_number = fields.CharField(max_length=MAX_CHARFIELD_LENGTH)
+    shelf_number = fields.CharField(max_length=MAX_CHARFIELD_LENGTH)
     storage_time = fields.DatetimeField(auto_now_add=True)
     is_in_stock = fields.BooleanField(default=True)
 
