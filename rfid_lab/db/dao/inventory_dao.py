@@ -1,6 +1,5 @@
+from datetime import datetime
 from typing import List, Optional
-
-from tortoise.fields import DatetimeField
 
 from rfid_lab.db.models.inventory_model import InventoryModel
 
@@ -15,7 +14,7 @@ class InventoryDAO:
         item_name: str,
         warehouse_number: str,
         shelf_number: str,
-        storage_time: DatetimeField,
+        storage_time: datetime,
         item_status: bool,
     ) -> None:
         """
@@ -55,7 +54,7 @@ class InventoryDAO:
     async def filter(
         self,
         item_number: Optional[str] = None,
-        storage_time: Optional[DatetimeField] = None,
+        storage_time: Optional[datetime] = None,
     ) -> List[InventoryModel]:
         """
         Get specific inventory item.
