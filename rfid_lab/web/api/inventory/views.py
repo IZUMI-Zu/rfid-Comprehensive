@@ -3,9 +3,9 @@ from typing import List
 from fastapi import APIRouter
 from fastapi.param_functions import Depends
 
-from db.dao.inventory_dao import InventoryDAO
-from db.models.inventory_model import InventoryModel
-from web.api.inventory.schema import InventoryModelDTO, InventoryModelInputDTO
+from rfid_lab.db.dao.inventory_dao import InventoryDAO
+from rfid_lab.db.models.inventory_model import InventoryModel
+from rfid_lab.web.api.inventory.schema import InventoryModelDTO, InventoryModelInputDTO
 
 router = APIRouter()
 
@@ -45,4 +45,5 @@ async def create_inventory_model(
         warehouse_number=new_inventory_object.warehouse_number,
         shelf_number=new_inventory_object.shelf_number,
         storage_time=new_inventory_object.storage_time,
+        item_status=new_inventory_object.is_in_stock,
     )

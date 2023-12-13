@@ -17,6 +17,7 @@ class InventoryModelDTO(BaseModel):
     warehouse_number: str
     shelf_number: str
     storage_time: datetime
+    is_in_stock: bool
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -38,3 +39,4 @@ class InventoryModelInputDTO(BaseModel):
         ...,
         description="The time when the inventory item was stored",
     )
+    is_in_stock: bool = Field(..., description="The status of the inventory item")
