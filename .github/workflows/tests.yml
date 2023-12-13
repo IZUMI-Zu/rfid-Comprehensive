@@ -1,4 +1,4 @@
-name: Testing checkin
+name: Testing rfid_lab
 
 on: push
 
@@ -58,6 +58,6 @@ jobs:
       env:
         POETRY_VIRTUALENVS_CREATE: false
     - name: Run pytest check
-      run: poetry run pytest -vv --cov="checkin" .
+      run: poetry run pytest -vv --cov="rfid_lab" .
       env:
-        CHECKIN_HOST: "0.0.0.0"
+        RFID_LAB_HOST: "0.0.0.0"

@@ -6,27 +6,27 @@ services:
       context: .
       dockerfile: ./deploy/Dockerfile
       target: prod
-    image: checkin:${CHECKIN_VERSION:-latest}
+    image: rfid_lab:${RFID_LAB_VERSION:-latest}
     restart: always
     env_file:
     - .env
     environment:
-      CHECKIN_HOST: 0.0.0.0
-      CHECKIN_DB_FILE: /db_data/db.sqlite3
+      RFID_LAB_HOST: 0.0.0.0
+      RFID_LAB_DB_FILE: /db_data/db.sqlite3
     volumes:
-    - checkin-db-data:/db_data/
+    - rfid_lab-db-data:/db_data/
 
   migrator:
-    image: checkin:${CHECKIN_VERSION:-latest}
+    image: rfid_lab:${RFID_LAB_VERSION:-latest}
     restart: "no"
-    command: alembic upgrade head
+    command: aerich upgrade
     environment:
-      CHECKIN_DB_FILE: /db_data/db.sqlite3
+      RFID_LAB_DB_FILE: /db_data/db.sqlite3
     volumes:
-    - checkin-db-data:/db_data/
+    - rfid_lab-db-data:/db_data/
 
 
 
 volumes:
-  checkin-db-data:
-    name: checkin-db-data
+  rfid_lab-db-data:
+    name: rfid_lab-db-data

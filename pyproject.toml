@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "checkin"
+name = "rfid_lab"
 version = "0.1.0"
 description = ""
 authors = [
@@ -19,9 +19,9 @@ pydantic = "^2"
 pydantic-settings = "^2"
 yarl = "^1.9.2"
 ujson = "^5.8.0"
-SQLAlchemy = {version = "^2.0.18", extras = ["asyncio"]}
-alembic = "^1.11.1"
-aiosqlite = "^0.19.0"
+tortoise-orm = "^0.19.3"
+aerich = "^0.7.1"
+aiosqlite = "<0.19.0"
 httptools = "^0.6.0"
 loguru = "^0.7.0"
 
@@ -38,12 +38,14 @@ autoflake = "^1.6.1"
 pytest-cov = "^4.0.0"
 anyio = "^3.6.2"
 pytest-env = "^0.8.1"
+asynctest = "^0.13.0"
+nest-asyncio = "^1.5.6"
 httpx = "^0.23.3"
 
 [tool.isort]
 profile = "black"
 multi_line_output = 3
-src_paths = ["checkin",]
+src_paths = ["rfid_lab",]
 
 [tool.mypy]
 strict = true
@@ -65,12 +67,16 @@ filterwarnings = [
     "ignore:.*unclosed.*:ResourceWarning",
 ]
 env = [
-    "CHECKIN_ENVIRONMENT=pytest",
-    "CHECKIN_DB_FILE=test_db.sqlite3",
+    "RFID_LAB_ENVIRONMENT=pytest",
+    "RFID_LAB_DB_FILE=test_db.sqlite3",
 ]
+[tool.aerich]
+tortoise_orm = "rfid_lab.db.config.TORTOISE_CONFIG"
+location = "./rfid_lab/db/migrations"
+src_folder = "./rfid_lab"
 
 [fastapi-template.options]
-project_name = "checkin"
+project_name = "rfid_lab"
 api_type = "rest"
 enable_redis = "None"
 enable_rmq = "None"
@@ -78,13 +84,13 @@ ci_type = "github"
 enable_migrations = "True"
 enable_taskiq = "None"
 enable_kube = "None"
-kube_name = "checkin"
+kube_name = "rfid-lab"
 enable_routers = "True"
 enable_kafka = "None"
 enable_loguru = "True"
 traefik_labels = "None"
 add_dummy = "True"
-orm = "sqlalchemy"
+orm = "tortoise"
 self_hosted_swagger = "None"
 prometheus_enabled = "None"
 sentry_enabled = "None"

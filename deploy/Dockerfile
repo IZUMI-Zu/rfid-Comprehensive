@@ -17,7 +17,7 @@ RUN poetry install --only main
 COPY . /app/src/
 RUN poetry install --only main
 
-CMD ["/usr/local/bin/python", "-m", "checkin"]
+CMD ["/usr/local/bin/python", "-m", "rfid_lab"]
 
 FROM prod as dev
 

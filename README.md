@@ -1,4 +1,4 @@
-# checkin
+# rfid_lab
 
 This project was generated using fastapi_template.
 
@@ -11,7 +11,7 @@ To run the project use this set of commands:
 
 ```bash
 poetry install
-poetry run python -m checkin
+poetry run python -m rfid_lab
 ```
 
 This will start the server on the configured host.
@@ -46,8 +46,8 @@ docker-compose -f deploy/docker-compose.yml --project-directory . build
 ## Project structure
 
 ```bash
-$ tree "checkin"
-checkin
+$ tree "rfid_lab"
+rfid_lab
 ├── conftest.py  # Fixtures for all tests.
 ├── db  # module contains db configurations
 │   ├── dao  # Data Access Objects. Contains different classes to interact with database.
@@ -71,18 +71,18 @@ This application can be configured with environment variables.
 You can create `.env` file in the root directory and place all
 environment variables here.
 
-All environment variables should start with "CHECKIN_" prefix.
+All environment variables should start with "RFID_LAB_" prefix.
 
-For example if you see in your "checkin/settings.py" a variable named like
-`random_parameter`, you should provide the "CHECKIN_RANDOM_PARAMETER"
+For example if you see in your "rfid_lab/settings.py" a variable named like
+`random_parameter`, you should provide the "RFID_LAB_RANDOM_PARAMETER"
 variable to configure the value. This behaviour can be changed by overriding `env_prefix` property
-in `checkin.settings.Settings.Config`.
+in `rfid_lab.settings.Settings.Config`.
 
 An example of .env file:
 ```bash
-CHECKIN_RELOAD="True"
-CHECKIN_PORT="8000"
-CHECKIN_ENVIRONMENT="dev"
+RFID_LAB_RELOAD="True"
+RFID_LAB_PORT="8000"
+RFID_LAB_ENVIRONMENT="dev"
 ```
 
 You can read more about BaseSettings class here: https://pydantic-docs.helpmanual.io/usage/settings/
@@ -110,33 +110,22 @@ You can read more about pre-commit here: https://pre-commit.com/
 
 If you want to migrate your database, you should run following commands:
 ```bash
-# To run all migrations until the migration with revision_id.
-alembic upgrade "<revision_id>"
-
-# To perform all pending migrations.
-alembic upgrade "head"
+# Upgrade database to the last migration.
+aerich upgrade
 ```
 
 ### Reverting migrations
 
 If you want to revert migrations, you should run:
 ```bash
-# revert all migrations up to: revision_id.
-alembic downgrade <revision_id>
-
-# Revert everything.
- alembic downgrade base
+aerich downgrade
 ```
 
 ### Migration generation
 
 To generate migrations you should run:
 ```bash
-# For automatic change detection.
-alembic revision --autogenerate
-
-# For empty file generation.
-alembic revision
+aerich migrate
 ```
 
 
