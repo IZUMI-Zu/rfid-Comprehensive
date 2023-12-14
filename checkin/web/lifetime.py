@@ -3,7 +3,22 @@ from typing import Awaitable, Callable
 from fastapi import FastAPI
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
+from checkin.db.utils import create_database
 from checkin.settings import settings
+
+
+# TODO: check if this function is needed
+async def _create_sqlite_db() -> None:  # pragma: no cover
+    from checkin.db.meta import meta  # noqa: WPS433
+    from checkin.db.models import load_all_models  # noqa: WPS433
+
+    load_all_models()
+
+    await create_database()
+
+    engine = create_async_engine(str(settings.db_url))
+    async with engine.begin() as conn:
+        await conn.run_sync(meta.create_all)
 
 
 def _setup_db(app: FastAPI) -> None:  # pragma: no cover
@@ -41,6 +56,7 @@ def register_startup_event(
     @app.on_event("startup")
     async def _startup() -> None:  # noqa: WPS430
         app.middleware_stack = None
+        await _create_sqlite_db()
         _setup_db(app)
         app.middleware_stack = app.build_middleware_stack()
         pass  # noqa: WPS420
