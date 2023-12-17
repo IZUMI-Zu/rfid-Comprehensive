@@ -1,6 +1,7 @@
 from importlib import metadata
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import UJSONResponse
 
 from checkin.logging import configure_logging
@@ -24,6 +25,15 @@ def get_app() -> FastAPI:
         redoc_url="/api/redoc",
         openapi_url="/api/openapi.json",
         default_response_class=UJSONResponse,
+    )
+
+    # TODO better CORS policy
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     # Adds startup and shutdown events.
