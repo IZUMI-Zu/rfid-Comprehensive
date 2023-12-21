@@ -62,7 +62,7 @@ async def get_inventory_by_item_number(
     """
 
     inventory = await inventory_dao.get_inventory_by_item_number(
-        item_number=item_number
+        item_number=item_number,
     )
     if inventory is None:
         raise HTTPException(status_code=404, detail="Item not found")
