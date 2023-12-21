@@ -62,9 +62,14 @@ class InventoryDAO:
         :param offset: offset of inventory.
         :return: stream of inventory.
         """
-        inventory_dummies = await self.session.execute(
-            select(InventoryModel).limit(limit).offset(offset),
-        )
+        if limit is None:
+            inventory_dummies = await self.session.execute(
+                select(InventoryModel).offset(offset),
+            )
+        else:
+            inventory_dummies = await self.session.execute(
+                select(InventoryModel).limit(limit).offset(offset),
+            )
 
         return list(inventory_dummies.scalars().fetchall())
 
@@ -87,3 +92,64 @@ class InventoryDAO:
             query = query.where(InventoryModel.storage_time == storage_time)
         rows = await self.session.execute(query)
         return list(rows.scalars().fetchall())
+
+    async def update_inventory(
+        self,
+        item_number,
+        card_number,
+        item_name,
+        warehouse_number,
+        shelf_number,
+        storage_time,
+        is_in_stock,
+    ):
+        """
+        Update inventory model in the database.
+
+        """
+        query = select(InventoryModel)
+        if item_number:
+            query = query.where(InventoryModel.item_number == item_number)
+
+        result = await self.session.execute(query)
+        inventory = result.scalars().first()
+
+        if inventory:
+            # Update the existing inventory model
+            inventory.card_number = card_number
+            inventory.item_name = item_name
+            inventory.warehouse_number = warehouse_number
+            inventory.shelf_number = shelf_number
+            inventory.storage_time = storage_time
+            inventory.is_in_stock = is_in_stock
+        else:
+            # Create a new inventory model
+            inventory = InventoryModel(
+                item_number=item_number,
+                card_number=card_number,
+                item_name=item_name,
+                warehouse_number=warehouse_number,
+                shelf_number=shelf_number,
+                storage_time=storage_time,
+                is_in_stock=is_in_stock,
+            )
+            self.session.add(inventory)
+
+        # Commit the changes
+        await self.session.commit()
+
+        # Refresh the instance to get the updated values
+        await self.session.refresh(inventory)
+
+        return inventory
+
+    async def get_inventory_by_item_number(self, item_number):
+        """
+        Get inventory model by item number.
+
+        """
+        query = select(InventoryModel).where(InventoryModel.item_number == item_number)
+        result = await self.session.execute(query)
+        inventory = result.scalars().first()
+        print(inventory)
+        return inventory
