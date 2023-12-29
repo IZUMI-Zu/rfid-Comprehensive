@@ -26,7 +26,7 @@ class InventoryDAO:
         is_in_stock: bool,
     ) -> None:
         """
-        Add single dummy to session.
+        Add single Inventory to session.
 
         item_number (str): The item number of the inventory item.
         card_number (str): The card number associated with the inventory item.
@@ -52,8 +52,8 @@ class InventoryDAO:
 
     async def get_all_inventories(
         self,
-        limit: int,
-        offset: int,
+        limit: Optional[int] = None,
+        offset: int = 0,
     ) -> List[InventoryModel]:
         """
         Get all inventory models with limit/offset pagination.
@@ -95,14 +95,14 @@ class InventoryDAO:
 
     async def update_inventory(
         self,
-        item_number,
-        card_number,
-        item_name,
-        warehouse_number,
-        shelf_number,
-        storage_time,
-        is_in_stock,
-    ):
+        item_number: str,
+        card_number: str,
+        item_name: str,
+        warehouse_number: str,
+        shelf_number: str,
+        storage_time: datetime,
+        is_in_stock: bool,
+    ) -> InventoryModel:
         """
         Update inventory model in the database.
 
@@ -143,13 +143,13 @@ class InventoryDAO:
 
         return inventory
 
-    async def get_inventory_by_item_number(self, item_number):
-        """
-        Get inventory model by item number.
-
-        """
+    async def get_inventory_by_item_number(
+        self,
+        item_number: str,
+    ) -> Optional[InventoryModel]:
+        """Get inventory model by item number."""
         query = select(InventoryModel).where(InventoryModel.item_number == item_number)
         result = await self.session.execute(query)
         inventory = result.scalars().first()
-        print(inventory)
+
         return inventory

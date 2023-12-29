@@ -22,7 +22,7 @@ class InventoryModel(Base):
         shelf_number (str): The shelf number where the item is stored.
         storage_time (datetime): The time when the item was stored in the inventory.
         is_in_stock (bool): Indicates whether the item is currently in stock or not.
-            True means "入库" (in stock), False means "出库" (out of stock).
+        True means "入库" (in stock), False means "出库" (out of stock).
     """
 
     __tablename__ = "inventory_model"
